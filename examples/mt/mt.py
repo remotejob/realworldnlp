@@ -28,8 +28,8 @@ def main():
         target_tokenizer=CharacterTokenizer(),
         source_token_indexers={'tokens': SingleIdTokenIndexer()},
         target_token_indexers={'tokens': SingleIdTokenIndexer(namespace='target_tokens')})
-    train_dataset = reader.read('data/mt/tatoeba.eng_cmn.train.tsv')
-    validation_dataset = reader.read('data/mt/tatoeba.eng_cmn.dev.tsv')
+    train_dataset = reader.read('data/mt/tatoeba.eng_fin.train.tsv')
+    validation_dataset = reader.read('data/mt/tatoeba.eng_fin.dev.tsv')
 
     vocab = Vocabulary.from_instances(train_dataset + validation_dataset,
                                       min_count={'tokens': 3, 'target_tokens': 3})
@@ -66,7 +66,7 @@ def main():
                       num_epochs=1,
                       cuda_device=CUDA_DEVICE)
 
-    for i in range(50):
+    for i in range(20):
         print('Epoch: {}'.format(i))
         trainer.train()
 
@@ -77,6 +77,10 @@ def main():
             print('GOLD:', instance.fields['target_tokens'].tokens)
             print('PRED:', predictor.predict_instance(instance)['predicted_tokens'])
 
+    with open("model.th", 'wb') as f:
+        torch.save(model.state_dict(), f)
+
+    vocab.save_to_files("vocabulary")    
 
 if __name__ == '__main__':
     main()
