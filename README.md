@@ -11,7 +11,7 @@ conda activate allennlp
 
 cp /tmp/seq2seqalien.txt data/mt/tatoeba.eng_fin.tsv
 
-cat data/mt/tatoeba.eng_fin.tsv | awk 'NR%10==1' > data/mt/tatoeba.eng_fin.test.tsv
+cat data/mt/tatoeba.eng_fin.tsv | awk 'NR%10==1' > tatoeba.eng_fin.test.tsv
 cat data/mt/tatoeba.eng_fin.tsv | awk 'NR%10==2' > data/mt/tatoeba.eng_fin.dev.tsv
 cat data/mt/tatoeba.eng_fin.tsv | awk 'NR%10!=1&&NR%10!=2' > data/mt/tatoeba.eng_fin.train.tsv
  

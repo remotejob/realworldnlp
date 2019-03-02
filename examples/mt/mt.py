@@ -77,10 +77,10 @@ def main():
             print('GOLD:', instance.fields['target_tokens'].tokens)
             print('PRED:', predictor.predict_instance(instance)['predicted_tokens'])
 
-    with open("model.th", 'wb') as f:
-        torch.save(model.state_dict(), f)
-
-    vocab.save_to_files("vocabulary")    
+    # with open("model.th", 'wb') as f:
+    #     torch.save(model.state_dict(), f)
+ 
+    # vocab.save_to_files("vocabulary")    
 
 if __name__ == '__main__':
     main()
