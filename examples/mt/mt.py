@@ -54,7 +54,7 @@ def main():
                           beam_size=8,
                           use_bleu=True)
     optimizer = optim.Adam(model.parameters())
-    iterator = BucketIterator(batch_size=64, sorting_keys=[("source_tokens", "num_tokens")])
+    iterator = BucketIterator(batch_size=128, sorting_keys=[("source_tokens", "num_tokens")])
 
     iterator.index_with(vocab)
 
