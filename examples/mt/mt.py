@@ -20,7 +20,7 @@ from allennlp.training.trainer import Trainer
 EN_EMBEDDING_DIM = 256
 ZH_EMBEDDING_DIM = 256
 HIDDEN_DIM = 256
-CUDA_DEVICE = 1
+CUDA_DEVICE = 0
 
 def main():
     reader = Seq2SeqDatasetReader(
@@ -54,7 +54,7 @@ def main():
                           beam_size=8,
                           use_bleu=True)
     optimizer = optim.Adam(model.parameters())
-    iterator = BucketIterator(batch_size=32, sorting_keys=[("source_tokens", "num_tokens")])
+    iterator = BucketIterator(batch_size=16, sorting_keys=[("source_tokens", "num_tokens")])
 
     iterator.index_with(vocab)
 
