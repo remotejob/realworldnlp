@@ -54,7 +54,7 @@ def main():
                           beam_size=8,
                           use_bleu=True)
     optimizer = optim.Adam(model.parameters())
-    iterator = BucketIterator(batch_size=16, sorting_keys=[("source_tokens", "num_tokens")])
+    iterator = BucketIterator(batch_size=16allennp, sorting_keys=[("source_tokens", "num_tokens")])
 
     iterator.index_with(vocab)
 
@@ -77,10 +77,10 @@ def main():
             print('GOLD:', instance.fields['target_tokens'].tokens)
             print('PRED:', predictor.predict_instance(instance)['predicted_tokens'])
 
-    # with open("model.th", 'wb') as f:
-    #     torch.save(model.state_dict(), f)
+    with open("model.th", 'wb') as f:
+        torch.save(model.state_dict(), f)
  
-    # vocab.save_to_files("vocabulary")    
+    vocab.save_to_files("vocabulary")    
 
 if __name__ == '__main__':
     main()
