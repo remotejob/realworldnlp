@@ -63,8 +63,8 @@ def main():
                       iterator=iterator,
                       train_dataset=train_dataset,
                       validation_dataset=validation_dataset,
-                      num_epochs=1,
-                      cuda_device=CUDA_DEVICE)
+                      num_epochs=1)
+                    #   cuda_device=CUDA_DEVICE)
 
     for i in range(20):
         print('Epoch: {}'.format(i))
