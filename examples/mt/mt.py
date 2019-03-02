@@ -20,7 +20,7 @@ from allennlp.training.trainer import Trainer
 EN_EMBEDDING_DIM = 256
 ZH_EMBEDDING_DIM = 256
 HIDDEN_DIM = 256
-CUDA_DEVICE = 0
+CUDA_DEVICE = 1
 
 def main():
     reader = Seq2SeqDatasetReader(
@@ -63,8 +63,8 @@ def main():
                       iterator=iterator,
                       train_dataset=train_dataset,
                       validation_dataset=validation_dataset,
-                      num_epochs=1)
-                    #   cuda_device=CUDA_DEVICE)
+                      num_epochs=1,
+                      cuda_device=CUDA_DEVICE)
 
     for i in range(20):
         print('Epoch: {}'.format(i))
