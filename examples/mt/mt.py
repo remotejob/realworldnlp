@@ -22,6 +22,7 @@ ZH_EMBEDDING_DIM = 256
 HIDDEN_DIM = 256
 CUDA_DEVICE = 0
 
+
 def main():
     reader = Seq2SeqDatasetReader(
         source_tokenizer=WordTokenizer(),
@@ -34,11 +35,14 @@ def main():
     vocab = Vocabulary.from_instances(train_dataset + validation_dataset,
                                       min_count={'tokens': 3, 'target_tokens': 3})
 
+    vocab.save_to_files("vocabulary")
+
     en_embedding = Embedding(num_embeddings=vocab.get_vocab_size('tokens'),
                              embedding_dim=EN_EMBEDDING_DIM)
     # encoder = PytorchSeq2SeqWrapper(
     #     torch.nn.LSTM(EN_EMBEDDING_DIM, HIDDEN_DIM, batch_first=True))
-    encoder = StackedSelfAttentionEncoder(input_dim=EN_EMBEDDING_DIM, hidden_dim=HIDDEN_DIM, projection_dim=128, feedforward_hidden_dim=128, num_layers=1, num_attention_heads=8)
+    encoder = StackedSelfAttentionEncoder(input_dim=EN_EMBEDDING_DIM, hidden_dim=HIDDEN_DIM,
+                                          projection_dim=128, feedforward_hidden_dim=128, num_layers=1, num_attention_heads=8)
 
     source_embedder = BasicTextFieldEmbedder({"tokens": en_embedding})
 
@@ -54,7 +58,8 @@ def main():
                           beam_size=8,
                           use_bleu=True)
     optimizer = optim.Adam(model.parameters())
-    iterator = BucketIterator(batch_size=1280, sorting_keys=[("source_tokens", "num_tokens")])
+    iterator = BucketIterator(batch_size=1280, sorting_keys=[
+                              ("source_tokens", "num_tokens")])
 
     iterator.index_with(vocab)
 
@@ -70,17 +75,22 @@ def main():
         print('Epoch: {}'.format(i))
         trainer.train()
 
+        with open("model.th", 'wb') as f:
+            torch.save(model.state_dict(), f)
+
         predictor = SimpleSeq2SeqPredictor(model, reader)
 
         for instance in itertools.islice(validation_dataset, 10):
             print('SOURCE:', instance.fields['source_tokens'].tokens)
             print('GOLD:', instance.fields['target_tokens'].tokens)
-            print('PRED:', predictor.predict_instance(instance)['predicted_tokens'])
+            print('PRED:', predictor.predict_instance(
+                instance)['predicted_tokens'])
 
     with open("model.th", 'wb') as f:
         torch.save(model.state_dict(), f)
- 
-    vocab.save_to_files("vocabulary")    
+
+    # vocab.save_to_files("vocabulary")
+
 
 if __name__ == '__main__':
     main()
