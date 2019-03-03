@@ -83,8 +83,8 @@ def main():
         for instance in itertools.islice(validation_dataset, 10):
             print('SOURCE:', instance.fields['source_tokens'].tokens)
             print('GOLD:', instance.fields['target_tokens'].tokens)
-            print('PRED:', predictor.predict_instance(
-                instance)['predicted_tokens'])
+            print(''.join(predictor.predict_instance(
+                instance)['predicted_tokens']))
 
     with open("model.th", 'wb') as f:
         torch.save(model.state_dict(), f)
