@@ -66,7 +66,7 @@ def main():
                       num_epochs=1,
                       cuda_device=CUDA_DEVICE)
 
-    for i in range(20):
+    for i in range(100):
         print('Epoch: {}'.format(i))
         trainer.train()
 
