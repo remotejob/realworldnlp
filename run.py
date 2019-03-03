@@ -62,53 +62,10 @@ def main():
         model.load_state_dict(torch.load(
             f, map_location=lambda storage, loc: storage))
 
-    # optimizer = optim.Adam(model.parameters())
-    # iterator = BucketIterator(batch_size=1280, sorting_keys=[
-    #                           ("source_tokens", "num_tokens")])
-
-    # iterator.index_with(vocab)
-
-    # trainer = Trainer(model=model,
-    #                   optimizer=optimizer,
-    #                   iterator=iterator,
-    #                   train_dataset=train_dataset,
-    #                   validation_dataset=validation_dataset,
-    #                   num_epochs=1,
-    #                   cuda_device=CUDA_DEVICE)
-
-    # predictor = SimpleSeq2SeqPredictor(model, reader)
-
-    # print('PRED:', predictor.predict_instance("missa sinä asua")['predicted_tokens'])
-
-    # for i in range(100):
-    #     # print('Epoch: {}'.format(i))
-    #     # trainer.train()
 
     predictor = SimpleSeq2SeqPredictor(model, reader)
 
-    # for instance in itertools.islice(validation_dataset, 5):
-
-    #     print(instance)
-    #     # print(' '.join(instance.fields['source_tokens'].tokens.str))
-    #     print('SOURCE:', instance.fields['source_tokens'].tokens)
-    #     print('GOLD:', instance.fields['target_tokens'].tokens)
-    #     print('PRED:', ''.join(predictor.predict_instance(
-    #         instance)['predicted_tokens']))
-        # ask = reader.text_to_instance("sopia hinta")
-        # print('PRED:', ''.join(predictor.predict_instance(
-        #     ask)['predicted_tokens']))
-
-    # insts  = []allennlp.data.instance.Instance
-
-    # insts.append(ask)
-
-    # reader2 = Seq2SeqDatasetReader(
-    #     source_tokenizer=WordTokenizer(),
-    #     # target_tokenizer=CharacterTokenizer(),
-    #     source_token_indexers={'tokens': SingleIdTokenIndexer()}
-    #     # target_token_indexers={'tokens': SingleIdTokenIndexer(namespace='target_tokens')})
-    # )
-
+ 
     ask = reader.text_to_instance("", "sopia hinta")
 
     print(''.join(predictor.predict_instance(ask)['predicted_tokens']))

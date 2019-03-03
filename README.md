@@ -19,4 +19,6 @@ cat data/mt/tatoeba.eng_fin.tsv | awk 'NR%10!=1&&NR%10!=2' > data/mt/tatoeba.eng
 python examples/mt/mt.py
 
 tar zxfv /tmp/allennlpmodel.tar.gz model.th vocabulary/
+
+rm -f model.th vocabulary/
  
