@@ -20,7 +20,7 @@ from allennlp.training.trainer import Trainer
 EN_EMBEDDING_DIM = 256
 ZH_EMBEDDING_DIM = 256
 HIDDEN_DIM = 256
-CUDA_DEVICE = -1
+CUDA_DEVICE = 0
 
 
 def main():
@@ -35,7 +35,7 @@ def main():
     vocab = Vocabulary.from_instances(train_dataset + validation_dataset,
                                       min_count={'tokens': 3, 'target_tokens': 3})
 
-    # vocab.save_to_files("vocabulary")
+    vocab.save_to_files("vocabulary")
 
     en_embedding = Embedding(num_embeddings=vocab.get_vocab_size('tokens'),
                              embedding_dim=EN_EMBEDDING_DIM)
@@ -58,8 +58,7 @@ def main():
                           beam_size=8,
                           use_bleu=True)
     optimizer = optim.Adam(model.parameters())
-    iterator = BucketIterator(batch_size=128, sorting_keys=[
-                              ("source_tokens", "num_tokens")])
+    iterator = BucketIterator(batch_size=512, sorting_keys=[("source_tokens", "num_tokens")])
 
     iterator.index_with(vocab)
 
