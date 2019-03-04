@@ -18,7 +18,13 @@ cat data/mt/tatoeba.eng_fin.tsv | awk 'NR%10!=1&&NR%10!=2' > data/mt/tatoeba.eng
 
 python examples/mt/mt.py
 
-tar zxfv /tmp/allennlpmodel.tar.gz model.th vocabulary/
+tar zcfv /tmp/allennlpmodel.tar.gz model.th vocabulary/
 
 rm -f model.th vocabulary/
- 
+
+
+curl --header "Content-Type: application/json" --request POST --data '{"ask":"missa sinä asua"}' http://localhost:5000/api
+curl --header "Content-Type: application/json" --request POST --data '{"ask":"milloin voida tavata"}' http://localhost:5000/api
+curl --header "Content-Type: application/json" -H "Content-Type: application/x-www-form-urlencoded; charset=utf-8" --request POST --data '{"ask":"olla sinä iso tissi ja nänni"}' http://localhost:5000/api
+curl -H "Content-Type: application/json; Content-Type: application/x-www-form-urlencoded; charset=utf-8" --request POST --data '{"ask":"se olla ihana"}' http://localhost:5000/api
+curl -H "Content-Type: application/json; Content-Type: application/x-www-form-urlencoded; charset=utf-8" --request POST --data '{"ask":"minkalainen sinä olla"}' http://localhost:5000/api
