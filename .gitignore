@@ -112,3 +112,4 @@ dmypy.json
 data
 vocabulary
 model.th
+.gz

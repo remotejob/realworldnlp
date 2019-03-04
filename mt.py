@@ -74,25 +74,6 @@ def main():
                       cuda_device=CUDA_DEVICE)
 
     trainer.train()
-    # for i in range(100):
-    #     print('Epoch: {}'.format(i))
-    #     trainer.train()
-
-    #     with open("model.th", 'wb') as f:
-    #         torch.save(model.state_dict(), f)
-
-    #     predictor = SimpleSeq2SeqPredictor(model, reader)
-
-    #     for instance in itertools.islice(validation_dataset, 10):
-    #         print('SOURCE:', instance.fields['source_tokens'].tokens)
-    #         print('GOLD:', instance.fields['target_tokens'].tokens)
-    #         print(''.join(predictor.predict_instance(
-    #             instance)['predicted_tokens']))
-
-    # with open("model.th", 'wb') as f:
-    #     torch.save(model.state_dict(), f)
-
-    # vocab.save_to_files("vocabulary")
 
 
 if __name__ == '__main__':
