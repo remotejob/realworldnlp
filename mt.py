@@ -20,7 +20,7 @@ from allennlp.training.trainer import Trainer
 EN_EMBEDDING_DIM = 256
 ZH_EMBEDDING_DIM = 256
 HIDDEN_DIM = 256
-CUDA_DEVICE = 0
+CUDA_DEVICE = -1
 
 
 def main():
@@ -35,7 +35,7 @@ def main():
     vocab = Vocabulary.from_instances(train_dataset + validation_dataset,
                                       min_count={'tokens': 3, 'target_tokens': 3})
 
-    vocab.save_to_files("vocabulary")
+    # vocab.save_to_files("vocabulary")
 
     en_embedding = Embedding(num_embeddings=vocab.get_vocab_size('tokens'),
                              embedding_dim=EN_EMBEDDING_DIM)
@@ -50,7 +50,7 @@ def main():
     # attention = BilinearAttention(HIDDEN_DIM, HIDDEN_DIM)
     attention = DotProductAttention()
 
-    max_decoding_steps = 20   # TODO: make this variable
+    max_decoding_steps = 30   # TODO: make this variable
     model = SimpleSeq2Seq(vocab, source_embedder, encoder, max_decoding_steps,
                           target_embedding_dim=ZH_EMBEDDING_DIM,
                           target_namespace='target_tokens',
@@ -58,7 +58,7 @@ def main():
                           beam_size=8,
                           use_bleu=True)
     optimizer = optim.Adam(model.parameters())
-    iterator = BucketIterator(batch_size=1280, sorting_keys=[
+    iterator = BucketIterator(batch_size=128, sorting_keys=[
                               ("source_tokens", "num_tokens")])
 
     iterator.index_with(vocab)
@@ -68,26 +68,30 @@ def main():
                       iterator=iterator,
                       train_dataset=train_dataset,
                       validation_dataset=validation_dataset,
-                      num_epochs=1,
+                      serialization_dir='finbotallen',
+                      keep_serialized_model_every_num_seconds=600,
+                      num_epochs=50,
+                      patience=2,
                       cuda_device=CUDA_DEVICE)
 
-    for i in range(100):
-        print('Epoch: {}'.format(i))
-        trainer.train()
+    trainer.train()
+    # for i in range(100):
+    #     print('Epoch: {}'.format(i))
+    #     trainer.train()
 
-        with open("model.th", 'wb') as f:
-            torch.save(model.state_dict(), f)
+    #     with open("model.th", 'wb') as f:
+    #         torch.save(model.state_dict(), f)
 
-        predictor = SimpleSeq2SeqPredictor(model, reader)
+    #     predictor = SimpleSeq2SeqPredictor(model, reader)
 
-        for instance in itertools.islice(validation_dataset, 10):
-            print('SOURCE:', instance.fields['source_tokens'].tokens)
-            print('GOLD:', instance.fields['target_tokens'].tokens)
-            print(''.join(predictor.predict_instance(
-                instance)['predicted_tokens']))
+    #     for instance in itertools.islice(validation_dataset, 10):
+    #         print('SOURCE:', instance.fields['source_tokens'].tokens)
+    #         print('GOLD:', instance.fields['target_tokens'].tokens)
+    #         print(''.join(predictor.predict_instance(
+    #             instance)['predicted_tokens']))
 
-    with open("model.th", 'wb') as f:
-        torch.save(model.state_dict(), f)
+    # with open("model.th", 'wb') as f:
+    #     torch.save(model.state_dict(), f)
 
     # vocab.save_to_files("vocabulary")
 
