@@ -58,7 +58,7 @@ def main():
                           beam_size=8,
                           use_bleu=True)
     optimizer = optim.Adam(model.parameters())
-    iterator = BucketIterator(batch_size=512, sorting_keys=[("source_tokens", "num_tokens")])
+    iterator = BucketIterator(batch_size=612, sorting_keys=[("source_tokens", "num_tokens")])
 
     iterator.index_with(vocab)
 
@@ -68,9 +68,9 @@ def main():
                       train_dataset=train_dataset,
                       validation_dataset=validation_dataset,
                       serialization_dir='finbotallen',
-                      keep_serialized_model_every_num_seconds=600,
-                      num_epochs=50,
-                      patience=2,
+                      keep_serialized_model_every_num_seconds=1200,
+                      num_epochs=150,
+                      patience=10,
                       cuda_device=CUDA_DEVICE)
 
     trainer.train()
