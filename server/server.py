@@ -69,7 +69,7 @@ if __name__ == '__main__':
     # attention = BilinearAttention(HIDDEN_DIM, HIDDEN_DIM)
     attention = DotProductAttention()
 
-    max_decoding_steps = 20   # TODO: make this variable
+    max_decoding_steps = 30   # TODO: make this variable
     model = SimpleSeq2Seq(vocab, source_embedder, encoder, max_decoding_steps,
                           target_embedding_dim=ZH_EMBEDDING_DIM,
                           target_namespace='target_tokens',
@@ -77,7 +77,7 @@ if __name__ == '__main__':
                           beam_size=8,
                           use_bleu=True)
 
-    with open("model.th", 'rb') as f:
+    with open("finbotallen/best.th", 'rb') as f:
         model.load_state_dict(torch.load(
             f, map_location=lambda storage, loc: storage))
 

@@ -17,9 +17,12 @@ from allennlp.modules.token_embedders import Embedding
 from allennlp.predictors import SimpleSeq2SeqPredictor
 from allennlp.training.trainer import Trainer
 
-EN_EMBEDDING_DIM = 256
-ZH_EMBEDDING_DIM = 256
-HIDDEN_DIM = 256
+# EN_EMBEDDING_DIM = 256
+# ZH_EMBEDDING_DIM = 256
+# HIDDEN_DIM = 256
+EN_EMBEDDING_DIM = 512
+ZH_EMBEDDING_DIM = 512
+HIDDEN_DIM = 512
 CUDA_DEVICE = 0
 
 
@@ -50,7 +53,7 @@ def main():
     # attention = BilinearAttention(HIDDEN_DIM, HIDDEN_DIM)
     attention = DotProductAttention()
 
-    max_decoding_steps = 30   # TODO: make this variable
+    max_decoding_steps = 50   # TODO: make this variable
     model = SimpleSeq2Seq(vocab, source_embedder, encoder, max_decoding_steps,
                           target_embedding_dim=ZH_EMBEDDING_DIM,
                           target_namespace='target_tokens',
@@ -68,7 +71,7 @@ def main():
                       train_dataset=train_dataset,
                       validation_dataset=validation_dataset,
                       serialization_dir='finbotallen',
-                      keep_serialized_model_every_num_seconds=1200,
+                    #   keep_serialized_model_every_num_seconds=1200,
                       num_epochs=150,
                       patience=10,
                       cuda_device=CUDA_DEVICE)
