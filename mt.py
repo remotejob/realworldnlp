@@ -73,7 +73,7 @@ def main():
                       serialization_dir='finbotallen',
                     #   keep_serialized_model_every_num_seconds=1200,
                       num_epochs=150,
-                      patience=10,
+                    #   patience=10,
                       cuda_device=CUDA_DEVICE)
 
     trainer.train()
